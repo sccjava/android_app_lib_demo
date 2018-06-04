@@ -11,62 +11,17 @@ android {
         }
     }
 
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 22
+        minSdkVersion 22
+        targetSdkVersion 27
         ndk {
             moduleName "blackfire"
         }
         signingConfig signingConfigs.debug
     }
-    sourceSets.main {
-        jni.srcDirs = []
-        jniLibs.srcDir 'src/main/libs'
-    }
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def ndkDir = properties.getProperty('ndk.dir')
-    //when user compile via jni in window env,the build name of jni is ndk-build.cmd while in linux,mac or ther env is ndk-build
-    def osName = System.getProperties().getProperty("os.name").toLowerCase();
-    def ndkBuildName = "";
-    if (osName.contains("window")){
-        ndkBuildName = "ndk-build.cmd";
-    }else{
-        ndkBuildName = "ndk-build";
-    }
-    task buildNativeDebug(type: Exec, description: 'Compile JNI source via NDK') {
-        commandLine "$ndkDir${File.separator}$ndkBuildName",
-                '-C', file('src/main/jni').absolutePath,
-                '-j', Runtime.runtime.availableProcessors(),
-                'all',
-                'NDK_DEBUG=1',
-                'FFMPEG=1',
-                'ACTIVE=0'
-    }
-    task buildNativeRelease(type: Exec, description: 'Compile JNI source via NDK') {
-        commandLine "$ndkDir${File.separator}$ndkBuildName",
-                '-C', file('src/main/jni').absolutePath,
-                '-j', Runtime.runtime.availableProcessors(),
-                'all',
-                'NDK_DEBUG=0',
-                'FFMPEG=1',
-                'ACTIVE=0'
-    }
-    task cleanNative(type: Exec, description: 'Clean JNI object files') {
-        commandLine "$ndkDir${File.separator}$ndkBuildName",
-                '-C', file('src/main/jni').absolutePath,
-                'clean'
-    }
-    clean.dependsOn 'cleanNative'
-    tasks.withType(JavaCompile) { compileTask ->
-        if (compileTask.name.contains('Debug')) {
-            compileTask.dependsOn buildNativeDebug
-        } else {
-            compileTask.dependsOn buildNativeRelease
-        }
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -76,7 +31,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile project(':core-lib')
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation fileTree(dir: 'libs', include: '*.jar')
 }

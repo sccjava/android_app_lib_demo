@@ -1,1 +1,7 @@
 include ':app'
+
+include ':LibCommon'
+project (':LibCommon').projectDir = new File(settingsDir, '../LibCommon')
+
+include ':sp_lib'
+project (':sp_lib').projectDir = new File(settingsDir, '../SlaveProject/sp_lib')
