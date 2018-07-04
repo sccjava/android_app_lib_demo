@@ -3,8 +3,6 @@ package com.bfrx;
 
 import android.content.Context;
 
-import com.media.player.R;
-
 import java.io.Serializable;
 
 public class Device implements Serializable {
@@ -12,6 +10,6 @@ public class Device implements Serializable {
 	public int protocol = 0;
 
 	public void setDevice(Context context){
-		context.getColor(R.color.colorAccent);
+
 	}
 }

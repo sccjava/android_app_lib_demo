@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MainProject</string>
+    <string name="mytext">My Text in Main Project</string>
 </resources>
